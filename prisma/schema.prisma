@@ -1,0 +1,74 @@
+// This is your Prisma schema file,
+// learn more about it in the docs: https://pris.ly/d/prisma-schema
+
+// Looking for ways to speed up your queries, or scale easily with your serverless or edge functions?
+// Try Prisma Accelerate: https://pris.ly/cli/accelerate-init
+
+generator client {
+  provider = "prisma-client-js"
+}
+
+datasource db {
+  provider = "postgresql"
+  url      = env("DATABASE_URL")
+}
+
+// ユーザーテーブル
+model User {
+  id         Int          @id @default(autoincrement())
+  email      String       @unique
+  name       String?
+  role       String       @default("user")
+  posts      Post[]
+  hashtags   UserHashTag[]
+  viewedPosts UserPost[]
+
+  @@map("users")
+}
+
+// 投稿テーブル
+model Post {
+  id         Int       @id @default(autoincrement())
+  imageUrl   String?
+  link       String
+  hashtagId  Int
+  hashtag    HashTag   @relation(fields: [hashtagId], references: [id])
+  createdBy  Int
+  creator    User      @relation(fields: [createdBy], references: [id])
+  viewedBy   UserPost[]
+
+  @@map("posts")
+}
+
+// ハッシュタグテーブル
+model HashTag {
+  id     Int    @id @default(autoincrement())
+  tag    String @unique
+  posts  Post[]
+  users  UserHashTag[]
+
+  @@map("hashtags")
+}
+
+// ユーザーとハッシュタグの中間テーブル
+model UserHashTag {
+  userId    Int
+  user      User   @relation(fields: [userId], references: [id])
+  hashtagId Int
+  hashtag   HashTag @relation(fields: [hashtagId], references: [id])
+
+  @@id([userId, hashtagId])
+  @@map("user_hashtags")
+}
+
+// ユーザーと投稿の閲覧履歴テーブル
+model UserPost {
+  userId  Int
+  user    User   @relation(fields: [userId], references: [id])
+  postId  Int
+  post    Post   @relation(fields: [postId], references: [id])
+  viewedAt DateTime @default(now())
+
+  @@id([userId, postId])
+  @@map("user_posts")
+}

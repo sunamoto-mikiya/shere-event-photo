@@ -1,3 +1,6 @@
+"use client";
+
+import React from "react";
 import Link from "next/link";
 
 interface Post {
@@ -16,7 +19,7 @@ async function fetchPosts() {
   const data = await res.json();
   return data.posts;
 }
-export default async function Home() {
+const PostsPage = async () => {
   const posts = await fetchPosts();
 
   return (
@@ -53,4 +56,6 @@ export default async function Home() {
       </div>
     </>
   );
-}
+};
+
+export default PostsPage;

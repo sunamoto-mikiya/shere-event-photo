@@ -1,7 +1,7 @@
 "use client";
 
-import React, { useEffect, useState } from "react";
-import axios from "axios";
+import React from "react";
+import Link from "next/link";
 
 interface Post {
   id: number;
@@ -23,12 +23,14 @@ const PostsPage = async () => {
   const posts = await fetchPosts();
 
   return (
-    console.log(posts),
-    (
+    <>
       <div className="container mt-5">
-        <h1>投稿一覧</h1>
-        <table className="table">
-          <thead>
+        <div className="d-flex justify-content-between align-items-center mb-3">
+          <h1 className="h3">投稿一覧</h1>
+          <Link href={"http://localhost:3000/posts/create"}>新規作成</Link>
+        </div>
+        <table className="table table-hover">
+          <thead className="thead-light">
             <tr>
               <th>ID</th>
               <th>Image URL</th>
@@ -52,7 +54,7 @@ const PostsPage = async () => {
           </tbody>
         </table>
       </div>
-    )
+    </>
   );
 };
 

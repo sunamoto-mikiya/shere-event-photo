@@ -49,24 +49,24 @@ const AddPost = () => {
       <div className="w-full m-auto  my-4">
         <div className="flex flex-col justify-center items-center m-auto">
           <p className="text-2xl text-slate-200 font-bold p-3">
-            Add a Wonderful Blog 🚀
+            Share Your Images!!
           </p>
           <form onSubmit={handleSubmit}>
             <input
               ref={imageUrlRef}
-              placeholder="Enter Title"
+              placeholder="Enter Image URL"
               type="text"
               className="rounded-md px-4 w-full py-2 my-2"
             />
             <input
               ref={hashtagIdRef}
-              placeholder="Enter Title"
+              placeholder="Select Hashtag ID"
               type="text"
               className="rounded-md px-4 w-full py-2 my-2"
             />
             <textarea
               ref={linkRef}
-              placeholder="Enter Description"
+              placeholder="Enter Share Link"
               className="rounded-md px-4 py-2 w-full my-2"
             ></textarea>
 

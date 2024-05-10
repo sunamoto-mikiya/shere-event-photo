@@ -1,7 +1,17 @@
 "use client";
 
 import { useRouter } from "next/navigation";
-import React, { Fragment, useRef } from "react";
+import React, { Fragment, useRef, useState } from "react";
+import { Input } from "@/components/ui/input";
+import { Label } from "@/components/ui/label";
+import { Textarea } from "@/components/ui/textarea";
+import {
+  Select,
+  SelectContent,
+  SelectItem,
+  SelectTrigger,
+  SelectValue,
+} from "@/components/ui/select";
 
 const postPost = async ({
   imageUrl,
@@ -28,15 +38,16 @@ const AddPost = () => {
   const router = useRouter();
   const imageUrlRef = useRef<HTMLInputElement | null>(null);
   const linkRef = useRef<HTMLTextAreaElement | null>(null);
-  const hashtagIdRef = useRef<HTMLInputElement | null>(null);
+  const [hashtagId, setHashtagId] = useState<string>("");
+
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
 
-    if (imageUrlRef.current && linkRef.current && hashtagIdRef.current) {
+    if (imageUrlRef.current && linkRef.current) {
       await postPost({
         imageUrl: imageUrlRef.current?.value,
         link: linkRef.current?.value,
-        hashtagId: parseInt(hashtagIdRef.current?.value),
+        hashtagId: parseInt(hashtagId),
         createdBy: 1,
       });
 
@@ -52,23 +63,34 @@ const AddPost = () => {
             Share Your Images!!
           </p>
           <form onSubmit={handleSubmit}>
-            <input
+            <Label htmlFor="ImageURL">Image URL</Label>
+            <Input
+              type="text"
               ref={imageUrlRef}
+              id="ImageURL"
               placeholder="Enter Image URL"
-              type="text"
               className="rounded-md px-4 w-full py-2 my-2"
             />
-            <input
-              ref={hashtagIdRef}
-              placeholder="Select Hashtag ID"
-              type="text"
-              className="rounded-md px-4 w-full py-2 my-2"
-            />
-            <textarea
+            <Label htmlFor="ShareLink">ハッシュタグを選択</Label>
+            <Select
+              value={hashtagId}
+              onValueChange={(value) => setHashtagId(value)}
+            >
+              <SelectTrigger className="w-[180px]">
+                <SelectValue placeholder="選択してください" />
+              </SelectTrigger>
+              <SelectContent>
+                <SelectItem value="1">wekfest</SelectItem>
+                <SelectItem value="2">stanceNation</SelectItem>
+                <SelectItem value="5">fendelist</SelectItem>
+              </SelectContent>
+            </Select>
+            <Label htmlFor="ShareLink">Share Link</Label>
+            <Textarea
               ref={linkRef}
               placeholder="Enter Share Link"
               className="rounded-md px-4 py-2 w-full my-2"
-            ></textarea>
+            />
 
             <button className="font-semibold px-4 py-2 shadow-xl bg-slate-200 rounded-lg m-auto hover:bg-slate-100">
               Submit

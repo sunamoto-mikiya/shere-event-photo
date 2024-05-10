@@ -1,3 +1,12 @@
+import { Button } from "@/components/ui/button";
+import {
+  Table,
+  TableBody,
+  TableCell,
+  TableHead,
+  TableHeader,
+  TableRow,
+} from "@/components/ui/table";
 import Link from "next/link";
 
 interface Post {
@@ -24,32 +33,32 @@ export default async function Home() {
       <div className="container mt-5">
         <div className="d-flex justify-content-between align-items-center mb-3">
           <h1 className="h3">投稿一覧</h1>
-          <Link href={"http://localhost:3000/posts/create"}>新規作成</Link>
+          <Button asChild className="m-2">
+            <Link href={"http://localhost:3000/posts/create"}>新規作成</Link>
+          </Button>
         </div>
-        <table className="table table-hover">
-          <thead className="thead-light">
-            <tr>
-              <th>ID</th>
-              <th>Image URL</th>
-              <th>Link</th>
-              <th>Hashtag ID</th>
-            </tr>
-          </thead>
-          <tbody>
+        <Table>
+          <TableHeader>
+            <TableRow>
+              <TableHead className="w-[100px]">ID</TableHead>
+              <TableHead>Image URL</TableHead>
+              <TableHead>Link</TableHead>
+              <TableHead>Hashtag ID</TableHead>
+            </TableRow>
+          </TableHeader>
+          <TableBody>
             {posts.map((post: Post) => (
-              <tr key={post.id}>
-                <td>{post.id}</td>
-                <td>{post.imageUrl}</td>
-                <td>
-                  <a href={post.link} target="_blank" rel="noopener noreferrer">
-                    {post.link}
-                  </a>
-                </td>
-                <td>{post.hashtagId}</td>
-              </tr>
+              <TableRow key={post.id}>
+                <TableCell className="font-medium">{post.id}</TableCell>
+                <TableCell>{post.imageUrl}</TableCell>
+                <TableCell>
+                  <Link href={post.link}>{post.link}</Link>
+                </TableCell>
+                <TableCell>{post.hashtagId}</TableCell>
+              </TableRow>
             ))}
-          </tbody>
-        </table>
+          </TableBody>
+        </Table>
       </div>
     </>
   );

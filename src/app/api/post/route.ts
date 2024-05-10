@@ -22,3 +22,20 @@ export const GET = async (req: Request, res: NextResponse) => {
     await prisma.$disconnect();
   }
 };
+
+export const POST = async (req: Request, res: NextResponse) => {
+  console.log("POST");
+
+  try {
+    const { imageUrl, link, hashtagId } = await req.json();
+    await main();
+    const post = await prisma.post.create({
+      data: { imageUrl, link, hashtagId, createdBy: 1 },
+    });
+    return NextResponse.json({ message: "Success", post }, { status: 201 });
+  } catch (err) {
+    return NextResponse.json({ message: "Error", err }, { status: 500 });
+  } finally {
+    await prisma.$disconnect();
+  }
+};
